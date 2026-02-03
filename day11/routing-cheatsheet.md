@@ -1,0 +1,139 @@
+🔹 1️⃣ What is Routing? (Very Simple)
+
+👉 Routing = switching pages without reloading browser
+
+Example:
+/login
+/dashboard
+/profile/101
+
+All inside one Angular app.
+
+🔹 2️⃣ Why Routing is Needed?
+
+Without routing:
+One huge page ❌
+Bad UX ❌
+
+With routing:
+✔ Multiple pages
+✔ Clean URL
+✔ Professional apps
+
+🔹 3️⃣ Enable Routing (Already Done)
+
+When you created app:
+`ng new my-app`
+✔ Add routing? → Yes
+Angular created:
+`app-routing.module.ts`
+
+🔹 4️⃣ Basic Routing Setup
+
+`app-routing.module.ts`
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'about', component: AboutComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}
+```
+
+🧠 Meaning:
+`path` → URL
+`component` → page
+
+🔹 5️⃣ Router Outlet (VERY IMPORTANT)
+
+`app.component.html`
+```html
+<router-outlet></router-outlet>
+```
+
+👉 This is where pages load.
+Think of it as: “Put page content here”
+
+🔹 6️⃣ Navigation (Links)
+
+Using HTML
+```html
+<a routerLink="/">Home</a>
+<a routerLink="/about">About</a>
+```
+
+No page reload ✔
+
+Using TypeScript
+```ts
+constructor(private router: Router) {}
+
+goToAbout() {
+  this.router.navigate(['/about']);
+}
+```
+
+⭐ 7️⃣ Router Parameters (IMPORTANT)
+
+👉 Used to send data through URL.
+Example:
+/user/101
+
+🔹 Define Route with Parameter
+
+`{ path: 'user/:id', component: UserComponent }`
+
+:id = dynamic value
+
+🔹 Read Router Param in Component
+
+`user.component.ts`
+```ts
+import { ActivatedRoute } from '@angular/router';
+
+constructor(private route: ActivatedRoute) {}
+
+ngOnInit() {
+  const userId = this.route.snapshot.paramMap.get('id');
+  console.log(userId);
+}
+```
+
+🟢 If URL = /user/101
+Output: 101
+
+🔹 Navigation with Param
+
+```html
+<a [routerLink]="['/user', 101]">User 101</a>
+```
+OR
+```ts
+this.router.navigate(['/user', 101]);
+```
+
+🔹 Real Todo Example 📝
+
+Route:
+`{ path: 'todo/:id', component: TodoDetailComponent }`
+
+Navigate:
+```html
+<li *ngFor="let todo of todos; index as i">
+  <a [routerLink]="['/todo', i]">{{ todo }}</a>
+</li>
+```
+
+Read param:
+```ts
+todoId = this.route.snapshot.paramMap.get('id');
+```

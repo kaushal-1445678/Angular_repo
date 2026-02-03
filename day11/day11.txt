@@ -1,0 +1,59 @@
+ROUTING & ROUTER PARAMS (SIMPLE) - Example
+
+1) `app-routing.module.ts` (routes setup)
+
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+
+const routes: Routes = [
+	{ path: 'products', component: ProductListComponent },
+	{ path: 'product/:id', component: ProductDetailComponent },
+	{ path: '', redirectTo: 'products', pathMatch: 'full' }
+];
+
+@NgModule({
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
+})
+export class AppRoutingModule {}
+```
+
+2) Link from a list view (`product-list.component.html`)
+
+```html
+<ul>
+	<li *ngFor="let product of products">
+		<a [routerLink]="['/product', product.id]">{{ product.name }}</a>
+	</li>
+</ul>
+```
+
+3) Read the route param in `product-detail.component.ts`
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({ selector: 'app-product-detail', template: `<p>Product ID: {{ id }}</p>` })
+export class ProductDetailComponent implements OnInit {
+	id: number | null = null;
+	constructor(private route: ActivatedRoute) {}
+
+	ngOnInit() {
+		// simple sync read
+		const idStr = this.route.snapshot.paramMap.get('id');
+		this.id = idStr ? +idStr : null;
+
+		// OR subscribe to params for changes
+		// this.route.params.subscribe(params => { this.id = +params['id']; });
+	}
+}
+```
+
+Notes:
+- Use `ActivatedRoute.snapshot.paramMap.get('id')` for a one-time read.
+- Use `this.route.params.subscribe(...)` if the same component stays active while params change.
+
