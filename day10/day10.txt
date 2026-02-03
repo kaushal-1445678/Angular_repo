@@ -1,0 +1,146 @@
+⭐ DAY 10 — SERVICES & DEPENDENCY INJECTION (DI)
+🎯 What you will learn
+✔ What is a Service
+✔ Why we need Services
+✔ What is Dependency Injection
+✔ How Angular uses DI
+✔ Real Todo example
+
+
+🔹 1️⃣ What is a SERVICE? (Very Simple)
+👉 Service = place where we write logic / data that is used in many components
+❌ Not UI
+❌ Not HTML
+✔ Business logic
+✔ API calls
+✔ Data sharing
+
+
+🧠 Simple Analogy
+Think of a restaurant 🍽️
+Component = waiter
+Service = kitchen
+Waiter doesn’t cook.
+Kitchen does.
+
+
+🔹 2️⃣ Why do we need Services?
+Without service:
+Code duplication
+Hard to maintain
+Bad architecture ❌
+With service:
+✔ Clean code
+✔ Reusable logic
+✔ Easy testing
+
+
+🔹 3️⃣ Create a Service
+ng generate service todo
+This creates:
+todo.service.ts
+
+
+🔹 todo.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TodoService {
+
+  todos: string[] = [];
+
+  getTodos() {
+    return this.todos;
+  }
+
+  addTodo(todo: string) {
+    this.todos.push(todo);
+  }
+}
+
+
+🧠 Meaning:
+@Injectable → service can be injected
+providedIn: 'root' → single instance (singleton)
+
+
+🔹 4️⃣ What is DEPENDENCY INJECTION?
+👉 Dependency Injection = Angular gives you the service automatically
+You don’t create service using new
+❌ Wrong:
+todoService = new TodoService();
+✔ Correct:
+constructor(private todoService: TodoService) {}
+🧠 Analogy
+You don’t bring water bottle to office
+Office provides it 💧
+Angular provides services.
+
+
+
+
+🔹 5️⃣ Use Service in Component
+app.component.ts
+import { TodoService } from './todo.service';
+
+export class AppComponent {
+
+  newTodo = '';
+  todos: string[] = [];
+
+  constructor(private todoService: TodoService) {}
+
+  ngOnInit() {
+    this.todos = this.todoService.getTodos();
+  }
+
+  addTodo() {
+    this.todoService.addTodo(this.newTodo);
+    this.newTodo = '';
+  }
+}
+app.component.html
+<input [(ngModel)]="newTodo">
+<button (click)="addTodo()">Add</button>
+
+<ul>
+  <li *ngFor="let todo of todos">
+    {{ todo }}
+  </li>
+</ul>
+
+
+
+
+🔹 6️⃣ What is providedIn: 'root'?
+👉 Means:
+One service instance
+Available everywhere
+Shared data
+Used for:
+✔ Auth
+✔ User data
+✔ Todos
+
+
+
+
+🔹 7️⃣ INTERVIEW QUESTIONS (VERY IMPORTANT)
+Q1: What is a service?
+👉 Class that contains business logic
+Q2: Why use services?
+👉 Reusability & separation of concerns
+Q3: What is dependency injection?
+👉 Angular injects dependencies automatically
+Q4: Why not create service using new?
+👉 Angular won’t manage lifecycle
+
+🔹 First: What is “lifecycle” (simple definition)?
+👉 Lifecycle = how something is created, used, and destroyed
+For a service, lifecycle includes:
+When it is created
+How many instances exist
+When it is shared
+When it is destroyed
