@@ -1,59 +1,106 @@
-ROUTING & ROUTER PARAMS (SIMPLE) - Example
-
-1) `app-routing.module.ts` (routes setup)
-
-```ts
+⭐ DAY 11 — ROUTING & ROUTER PARAMS (SIMPLE)
+🎯 What you will learn
+✔ What is routing
+✔ Why routing is needed
+✔ How to create routes
+✔ How to navigate
+✔ Router parameters (VERY IMPORTANT)
+🔹 1️⃣ What is Routing? (Very Simple)
+👉 Routing = switching pages without reloading browser
+Example:
+/login
+/dashboard
+/profile/101
+All inside one Angular app.
+🔹 2️⃣ Why Routing is Needed?
+Without routing:
+One huge page ❌
+Bad UX ❌
+With routing:
+✔ Multiple pages
+✔ Clean URL
+✔ Professional apps
+🔹 3️⃣ Enable Routing (Already Done)
+When you created app:
+ng new my-app
+✔ Add routing? → Yes
+Angular created:
+app-routing.module.ts
+🔹 4️⃣ Basic Routing Setup
+app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductListComponent } from './product-list/product-list.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
-	{ path: 'products', component: ProductListComponent },
-	{ path: 'product/:id', component: ProductDetailComponent },
-	{ path: '', redirectTo: 'products', pathMatch: 'full' }
+  { path: '', component: HomeComponent },
+  { path: 'about', component: AboutComponent }
 ];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes)],
-	exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}
-```
+🧠 Meaning:
+path → URL
+component → page
+🔹 5️⃣ Router Outlet (VERY IMPORTANT)
+app.component.html
+<router-outlet></router-outlet>
+👉 This is where pages load.
+Think of it as:
+“Put page content here”
+🔹 6️⃣ Navigation (Links)
+Using HTML
+<a routerLink="/">Home</a>
+<a routerLink="/about">About</a>
+No page reload ✔
+Using TypeScript
+constructor(private router: Router) {}
 
-2) Link from a list view (`product-list.component.html`)
-
-```html
-<ul>
-	<li *ngFor="let product of products">
-		<a [routerLink]="['/product', product.id]">{{ product.name }}</a>
-	</li>
-</ul>
-```
-
-3) Read the route param in `product-detail.component.ts`
-
-```ts
-import { Component, OnInit } from '@angular/core';
+goToAbout() {
+  this.router.navigate(['/about']);
+}
+⭐ 7️⃣ Router Parameters (IMPORTANT)
+👉 Used to send data through URL.
+Example:
+/user/101
+🔹 Define Route with Parameter
+{ path: 'user/:id', component: UserComponent }
+:id = dynamic value
+🔹 Read Router Param in Component
+user.component.ts
 import { ActivatedRoute } from '@angular/router';
 
-@Component({ selector: 'app-product-detail', template: `<p>Product ID: {{ id }}</p>` })
-export class ProductDetailComponent implements OnInit {
-	id: number | null = null;
-	constructor(private route: ActivatedRoute) {}
+constructor(private route: ActivatedRoute) {}
 
-	ngOnInit() {
-		// simple sync read
-		const idStr = this.route.snapshot.paramMap.get('id');
-		this.id = idStr ? +idStr : null;
-
-		// OR subscribe to params for changes
-		// this.route.params.subscribe(params => { this.id = +params['id']; });
-	}
+ngOnInit() {
+  const userId = this.route.snapshot.paramMap.get('id');
+  console.log(userId);
 }
-```
-
-Notes:
-- Use `ActivatedRoute.snapshot.paramMap.get('id')` for a one-time read.
-- Use `this.route.params.subscribe(...)` if the same component stays active while params change.
-
+🟢 If URL = /user/101
+Output: 101
+🔹 Navigation with Param
+<a [routerLink]="['/user', 101]">User 101</a>
+OR
+this.router.navigate(['/user', 101]);
+🔹 Real Todo Example 📝
+Route:
+{ path: 'todo/:id', component: TodoDetailComponent }
+Navigate:
+<li *ngFor="let todo of todos; index as i">
+  <a [routerLink]="['/todo', i]">{{ todo }}</a>
+</li>
+Read param:
+todoId = this.route.snapshot.paramMap.get('id');
+🔹 INTERVIEW QUESTIONS (IMPORTANT)
+Q1: What is routing?
+👉 Navigation between views without reload
+Q2: What is router-outlet?
+👉 Placeholder for routed components
+Q3: What are router params?
+👉 Dynamic values passed through URL
+Q4: Difference between routerLink & href?
+👉 routerLink avoids page reload
