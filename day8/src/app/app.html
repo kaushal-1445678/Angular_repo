@@ -1,0 +1,36 @@
+<h1>{{title}}</h1>
+
+<p> Hello, my name is {{name}}</p>
+
+<p> This is my first Angular project </p>
+
+
+<!-- //example of one way binding -->
+<h1>This is the age {{age}}</h1>
+
+
+<!-- example of property binding -->
+<button [disabled]="isDisabled">Click me</button> this is the disabled button
+
+
+<!-- example of event binding -->
+<button (click)="onClick()">Click me for alert</button>
+
+
+<input (input)="showValue($event)" type="text" placeholder="type here">
+
+<p *ngIf="isLoggedIn">Welcome here</p>
+
+<p *ngIf="!isLoggedIn">Please login</p>
+
+<!-- example of ngFor -->
+<ul>
+<li *ngFor="let u of user; index as i">
+    {{i+1}}-{{u}}
+</li>
+</ul>
+
+
+<input [(ngModel)]="name" placeholder="Enter name">
+<p>You typed: {{ name }}</p>
+

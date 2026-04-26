@@ -2,12 +2,11 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm",
-    "analytics": "3077fc2e-b4c7-4864-b95c-e8b925998b8d"
+    "packageManager": "npm"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "my-angualr-app": {
+    "day8": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -30,6 +29,9 @@
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
+            "security": {
+              "allowedHosts": ["*"]
+            },
             "ssr": {
               "entry": "src/server.ts"
             }
@@ -60,12 +62,16 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "host": "0.0.0.0",
+            "allowedHosts": ["*"]
+          },
           "configurations": {
             "production": {
-              "buildTarget": "my-angualr-app:build:production"
+              "buildTarget": "day8:build:production"
             },
             "development": {
-              "buildTarget": "my-angualr-app:build:development"
+              "buildTarget": "day8:build:development"
             }
           },
           "defaultConfiguration": "development"
