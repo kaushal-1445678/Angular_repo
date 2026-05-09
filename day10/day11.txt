@@ -1,0 +1,91 @@
+Step 1: Created Individual Page Components
+
+I made 5 separate components (like mini-pages):
+
+HomeComponent: A welcome page
+LoginComponent: A login form
+DashboardComponent: A user dashboard
+UserComponent: Shows user details (with ID from URL)
+NotFoundComponent: A "page not found" error page
+Why? Each "page" in your app needs its own component. These are like the content that shows when someone visits different URLs.
+
+Step 2: Set Up the Route Map
+
+In app.routes.ts, I created a list that connects URLs to components:
+
+
+{ path: 'login', component: LoginComponent }{ path: 'user/:id', component: UserComponent }
+Why? This tells Angular: "When someone goes to /login, show the LoginComponent. When they go to /user/123, show the UserComponent and pass '123' as the ID."
+
+Step 3: Added the Router Outlet
+
+In app.html, I replaced your todo list with:
+
+
+<nav>  <a routerLink="/login">Login</a></nav><router-outlet></router-outlet>
+Why? The <router-outlet> is like a placeholder. Angular automatically puts the right component here based on the current URL. The nav links let users click to change pages.
+
+Step 4: Added Navigation Links
+
+I used routerLink="/login" instead of regular <a href="/login">.
+
+Why? Regular links reload the whole page (slow). routerLink just swaps the content in <router-outlet> (fast, like a real app).
+
+Step 5: Added Programmatic Navigation
+
+In components like Login and Dashboard, I used:
+
+
+this.router.navigate(['/dashboard']);
+Why? Sometimes you need to redirect users after they do something (like after login). This lets you change pages from your TypeScript code, not just from clicking links.
+
+Step 6: Added Route Parameters
+
+The UserComponent gets the ID from the URL using:
+
+
+const id = this.route.snapshot.paramMap.get('id');
+Why? URLs like /user/101 let you pass data. This is useful for showing specific user profiles, product details, etc., without needing separate routes for each one.
+
+Step 7: Added a Catch-All Route
+
+
+{ path: '**', component: NotFoundComponent }
+Why? If someone types a wrong URL, this shows a friendly "not found" page instead of a blank screen.
+
+Why This Matters
+
+Before routing: Every page change reloaded everything (slow, bad UX).
+After routing: Pages switch instantly (fast, feels like Instagram/Amazon).
+
+Your app now works like a real website - users can bookmark pages, use browser back/forward buttons, and navigate smoothly between different sections!
+
+
+
+
+
+
+
+
+login Routing steps:-
+
+
+
+step 1:-
+in app.routes.ts file ({ path: 'login', component: LoginComponent })
+
+
+step 2:-
+in html file (<a routerLink="/login">Login</a> )
+
+and always add (<router-outlet></router-outlet>)
+without it we cannot se the page.
+
+step 3:-
+in app.ts file 
+import { RouterOutlet, RouterLink } from '@angular/router';
+
+
+
+
+

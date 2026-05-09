@@ -1,11 +1,11 @@
-<input type="text" [(ngModel)]="newTodo">
-<button (click)="addTodo()">Add</button>
+<nav>
+  <a routerLink="/">Home</a> |
+  <a routerLink="/login">Login</a> |
+  <a routerLink="/dashboard">Dashboard</a>
+</nav>
+<router-outlet></router-outlet>
 
-<ul>
-  <li *ngFor="let todo of todos">
-    {{todo}}
-  </li>
-</ul>
+
 
 
 
